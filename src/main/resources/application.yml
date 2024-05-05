@@ -1,0 +1,74 @@
+server:
+  port: 6001
+spring:
+  application:
+    name: dockerboot
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/db2024?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    # url: jdbc:mysql://192.168.0.105:3306/db2024?useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: mydocker
+    password: root
+#    hikari:
+#      maximum-pool-size: 20
+#      minimum-idle: 8
+    druid:
+      test-while-idle: false
+    type: com.alibaba.druid.pool.DruidDataSource
+  #在springboot2.6.X结合swagger2.9.X会提示documentationPluginsBootstrapper空指针异常，
+  #原因是在springboot2.6.X中将SpringMVC默认路径匹配策略从AntPathMatcher更改为PathPatternParser，
+  # 导致出错，解决办法是matching-strategy切换回之前ant_path_matcher
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+#  连接单机
+  redis:
+#    host: 192.168.204.122
+    host: redis
+    password: 123456
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    # ========================redis单机=====================
+    database: 0
+#  redis:
+#    cluster:
+#      # 获取失败，最大重定向次数
+#      max-redirects: 3
+#      nodes: "192.168.204.122:6381,192.168.204.122:6382,192.168.204.122:6383,192.168.204.122:6384,192.168.204.122:6385,192.168.204.122:6386"
+#    lettuce:
+#      cluster:
+#        refresh:
+#          #支持集群拓扑动态感应刷新，自适应拓扑刷新是否使用所有可用的更新，默认false关闭
+#          adaptive: true
+#          #定时刷新
+#          period: 2000
+#      pool:
+#        # 连接池中最大连接数，负数表示没有限制
+#        max-active: 8
+#        # 最大阻塞等待时间，负数表示没有限制
+#        max-wait: -1ms
+#        # 连接池中的最大空闲连接
+#        max-idle: 8
+#        # 连接池中的最小空闲连接
+#        min-idle: 0
+
+  swagger2:
+    enabled: true
+mybatis-plus:
+  type-aliases-package: com.rts.entity
+# ========================logging=====================
+logging:
+  level:
+    root: info
+    com:
+      rts: info
+  file:
+    name: "D:/mylogs2024/docker_boot.log"
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger- %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger- %msg%n"
